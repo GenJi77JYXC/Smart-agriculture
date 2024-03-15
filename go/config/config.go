@@ -12,9 +12,10 @@ func ConfigInit() {
 	// 配置文件名字
 	viper.SetConfigName("config")
 	// 配置文件类型
-	viper.SetConfigType("yml")
+	viper.SetConfigType("yaml")
 	// 配置文件路径
 	viper.AddConfigPath(workDir + "/config")
+	// fmt.Println("配置文件路径" + workDir + "/config")
 	// 尝试读入配置文件
 	err := viper.ReadInConfig()
 	// 读去失败报错退出

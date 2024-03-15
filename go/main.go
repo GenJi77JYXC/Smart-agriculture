@@ -1,6 +1,8 @@
 package main
 
 import (
+	"demo/config"
+	"demo/database"
 	"demo/routers"
 
 	"github.com/gin-gonic/gin"
@@ -9,11 +11,13 @@ import (
 )
 
 func main() {
-
+	config.ConfigInit()
+	database.InitMysql()
 	// fmt.Println("Hello World!")
 	r := gin.Default()
 
 	r = routers.CollectRouter(r)
+
 	// 从viper中获取到运行端口
 	port := viper.GetString("server.port")
 	// 如果指定了端口

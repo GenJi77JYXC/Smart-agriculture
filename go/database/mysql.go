@@ -21,10 +21,11 @@ func InitMysql() *gorm.DB {
 	// 格式化
 	args := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true&loc=Local",
 		username, password, host, port, database)
+	// fmt.Println(args)
 	// mysql连接
 	db, err := gorm.Open(mysql.Open(args), &gorm.Config{})
 	if err != nil {
-		panic("failed to connect mysql database,err:" + err.Error())
+		panic("failed to connect mysql database,err:\n" + err.Error())
 	}
 	// 自动建表
 	db.AutoMigrate(&model.User{})
