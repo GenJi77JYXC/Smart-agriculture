@@ -37,6 +37,12 @@ func RedisSetKey(key, val string) {
 		fmt.Println("RedisSetKey出错")
 		panic(err)
 	}
+	defer func(rdb *redis.Client) {
+		err := rdb.Close()
+		if err != nil {
+			fmt.Println("rdb关闭错误：", err)
+		}
+	}(rdb)
 }
 
 func RedisGetKey(key string) string {
@@ -44,6 +50,12 @@ func RedisGetKey(key string) string {
 	if err != nil {
 		fmt.Println("RedisGetKey出错:", err)
 	}
+	defer func(rdb *redis.Client) {
+		err := rdb.Close()
+		if err != nil {
+			fmt.Println("rdb关闭错误：", err)
+		}
+	}(rdb)
 	// 如果val等于空字符串， 证明这个key没有被放入redis， 也就是这个token没被注销
 	return val
 }
