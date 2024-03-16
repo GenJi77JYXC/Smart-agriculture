@@ -13,6 +13,7 @@ import (
 func main() {
 	config.ConfigInit()
 	database.InitMysql()
+	database.InitRedis()
 	// fmt.Println("Hello World!")
 	r := gin.Default()
 

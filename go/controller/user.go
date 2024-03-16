@@ -5,6 +5,7 @@ import (
 	"demo/middleware"
 	"demo/model"
 	"demo/response"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -27,6 +28,13 @@ func Login(ctx *gin.Context) {
 		response.Response(ctx, 403, 403, "用户不存在", "请重新输入信息")
 		return
 	}
+	// 判断用户登录状态
+	if user.State == true {
+		response.Response(ctx, 403, 403, "用户在其他地方已经登录", "请勿重复登录")
+		return
+	} else {
+		DB.Model(&user).Update("State", true)
+	}
 
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
@@ -39,6 +47,7 @@ func Login(ctx *gin.Context) {
 		response.Response(ctx, 500, 500, "token发放错误", "token发放错误")
 		return
 	}
+
 	response.Response(ctx, 200, 200, token, "登录成功")
 }
 
@@ -70,13 +79,38 @@ func Regist(ctx *gin.Context) {
 	}
 	DB.Create(&newUser)
 
-	//发放token
-	token, err := middleware.ReleaseToken(user)
-	if err != nil {
-		response.Response(ctx, 403, 403, "发放token失败", "发放token失败")
+	////发放token
+	//token, err := middleware.ReleaseToken(user)
+	//if err != nil {
+	//	response.Response(ctx, 403, 403, "发放token失败", "发放token失败")
+	//	return
+	//}
+
+	response.Response(ctx, 200, 200, "注册成功", "注册成功")
+
+}
+
+func LogOut(ctx *gin.Context) {
+	user, err := ctx.Get("user")
+	token, err1 := ctx.Get("token")
+	// err == false 证明value不存在
+	if err == false && err1 == false {
+		response.Response(ctx, 500, 500, "ctx获取上下文错误", "服务器错误")
+		fmt.Println("ctx获取上下文错误：", err)
 		return
 	}
+	tokenString := fmt.Sprintf("%v", token)
 
-	response.Response(ctx, 200, 200, token, "注册成功")
+	// 将token放入redis黑名单
+	database.RedisSetKey(tokenString, tokenString)
+
+	// 将user转换成model.User类型
+	u := user.(model.User)
+	DB := database.GetDB()
+	DB.Table("users").Where("id = ?", u.ID).First(&u)
+	u.State = false
+	DB.Save(&u)
+
+	response.Response(ctx, 200, 200, "用户登出成功", "登出成功")
 
 }

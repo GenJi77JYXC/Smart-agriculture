@@ -2,6 +2,7 @@ package routers
 
 import (
 	"demo/controller"
+	"demo/middleware"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,7 @@ func CollectRouter(r *gin.Engine) *gin.Engine {
 
 	r.POST("/login", controller.Login)
 	r.POST("/regist", controller.Regist)
+	r.POST("/logout", middleware.AuthMiddleWare(), controller.LogOut)
 
 	return r
 }

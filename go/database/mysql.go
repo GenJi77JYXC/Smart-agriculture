@@ -31,6 +31,7 @@ func InitMysql() *gorm.DB {
 	db.AutoMigrate(&model.User{})
 
 	DB = db
+	fmt.Println("数据库初始化完成")
 	return db
 }
 
