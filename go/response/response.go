@@ -22,7 +22,7 @@ func Fail(ctx *gin.Context, code int, data, msg string) {
 	})
 }
 
-func Response(ctx *gin.Context, httpstatus, code int, data, msg string) {
+func Response(ctx *gin.Context, httpstatus, code int, data, msg any) {
 	ctx.JSON(httpstatus, gin.H{
 		"code": code,
 		"data": data,
