@@ -10,7 +10,7 @@ import Password from 'primevue/password';
 
 const {username, password, login} = useLogin()
 
-
+console.log(username, "---", password)
 
 </script>
 

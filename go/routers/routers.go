@@ -9,6 +9,7 @@ import (
 )
 
 func CollectRouter(r *gin.Engine) *gin.Engine {
+	r.Use(middleware.Cors())
 	r.GET("/ip", func(ctx *gin.Context) {
 		ctx.String(http.StatusOK, ctx.ClientIP())
 	})
