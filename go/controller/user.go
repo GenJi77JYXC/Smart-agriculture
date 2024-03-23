@@ -16,6 +16,7 @@ func Login(ctx *gin.Context) {
 
 	username := ctx.PostForm("username")
 	password := ctx.PostForm("password")
+	fmt.Println(username, "--------", password)
 
 	// 判断密码合法性
 	if len(password) < 6 {
@@ -56,6 +57,7 @@ func Regist(ctx *gin.Context) {
 
 	username := ctx.PostForm("username")
 	password := ctx.PostForm("password")
+	fmt.Println(username, "--------", password)
 	// 判断密码合法性
 	if len(password) < 6 {
 		response.Response(ctx, 403, 403, "密码长度太低", "密码至少需要6位")

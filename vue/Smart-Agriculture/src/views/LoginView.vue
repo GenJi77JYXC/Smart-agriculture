@@ -1,32 +1,54 @@
 <script lang="ts" setup>
-import useLogin from '../stores/useLogin'
-import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
-import Password from 'primevue/password';
+
+// import axios from 'axios';
+// import { ref } from 'vue';
+import {useUserStore} from '@/stores/user'
+
+const userStore = useUserStore();
+
+// const username = ref('')
+// const password = ref('')
+
+// function login() {
+
+//     try {
+//         let data = new FormData();
+//         data.append('username', username.value)
+//         data.append('password', password.value)
+//         console.log(username.value, password.value)
+//         console.log('post 之前')
+//         console.log(data)
+//              axios.post('http://127.0.0.1:8080/login', data)
+//             .then(res => {
+//                 console.log("后端返回的数据",res.data.data)
+//             })
+//             console.log('post 之后')
+//         } catch (error) {
+//             console.log('axios出错')
+//             console.log(error)
+//         }
+//     }
 
 
-
-
-
-const {username, password, login} = useLogin()
-
-console.log(username, "---", password)
 
 </script>
 
 <template>
-    <div>
-        <div class="card flex justify-content-center">
-            <div class="flex flex-column gap-2">
-                <label for="username">Username</label>
-                <InputText id="username" v-model="username" aria-describedby="username-help" />
-                <small id="username-help">Enter your username to reset your password.</small>
-            </div>
-        </div>
-        <div class="card flex justify-content-center">
-            <Password v-model="password" :feedback="false" />
-        </div>
-        <Button @click="login(username, password)">提交</Button>
+    <div class="login-container">
+    <h2>登录页</h2>
+    <div class="p-inputgroup">
+      <span class="p-inputgroup-addon">
+        <i class="pi pi-user"></i>
+      </span>
+      <InputText v-model="userStore.username" placeholder="请输入用户名" />
     </div>
+    <div class="p-inputgroup">
+      <span class="p-inputgroup-addon">
+        <i class="pi pi-key"></i>
+      </span>
+      <Password v-model="userStore.password" placeholder="请输入密码" />
+    </div>
+    <Button label="登录" @click="userStore.login()" />
+  </div>
     
 </template>
