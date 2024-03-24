@@ -14,6 +14,7 @@ func main() {
 	config.ConfigInit()
 	database.InitMysql()
 	database.InitRedis()
+	database.InitMQTT("go-mqtt-client-genji")
 	// fmt.Println("Hello World!")
 	r := gin.Default()
 

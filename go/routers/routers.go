@@ -18,5 +18,9 @@ func CollectRouter(r *gin.Engine) *gin.Engine {
 	r.POST("/regist", controller.Regist)
 	r.POST("/logout", middleware.AuthMiddleWare(), controller.LogOut)
 
+	// mqtt
+	r.POST("/publish", controller.PublicMsg)
+	r.POST("/listen", controller.Listen)
+
 	return r
 }
